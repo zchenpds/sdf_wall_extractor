@@ -10,4 +10,4 @@ Extracts the wall links and write them in an xml format for pedsim_ros to use.
 
 ## How to use
 1. Change the filePath in the main function of the main.cpp file to specify the location of the sdf file to be exported. An example sdf file is provided.
-1. Copy the content of generated xml file into an intended xml file to be used by pedsim_ros. 
+1. Copy the content of the generated xml file into an intended xml file to be used by pedsim_ros. 
