@@ -153,13 +153,18 @@ public:
     SdfExporter(string filePath)
     {
         sdf.LoadFile(filePath.c_str());
-        XMLElement* eleLink;
+        XMLElement *eleLink, *eleModel;
         cout << "Model Pose: ";
-        modelPose = Pose(sdf.FirstChildElement( "sdf" )->FirstChildElement( "model" )
-                         ->FirstChildElement( "pose" )->GetText());
+        // If the extension is world
+        if (filePath.substr(filePath.find_last_of('.')+1) == "world")
+            eleModel = sdf.FirstChildElement( "sdf" )->FirstChildElement( "world" )
+                    ->FirstChildElement( "model" );
+        else if (filePath.substr(filePath.find_last_of('.')+1) == "sdf")
+            eleModel = sdf.FirstChildElement( "sdf" )->FirstChildElement( "model" );
+        modelPose = Pose(eleModel->FirstChildElement( "pose" )->GetText());
         cout << "\n";
 
-        eleLink = sdf.FirstChildElement( "sdf" )->FirstChildElement( "model" )->FirstChildElement( "link" );
+        eleLink = eleModel->FirstChildElement( "link" );
         queue<XMLElement*> eleLinkWalls;
 
         // Find all link elements with names starting with "Wall"
@@ -205,8 +210,9 @@ public:
 
 int main(int argc, char *argv[])
 {
-    SdfExporter se( "../../Downloads/Altorfer_1_v2/model.sdf" );
-    se.writeXml();
+    // SdfExporter se( "../../Downloads/Altorfer_1_v2/model.sdf" );
+    SdfExporter se( "sdf\\world_altorfer_v3.world" );
+    se.writeXml( "xml\\fahad.xml" );
 
 
 }
